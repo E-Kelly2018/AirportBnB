@@ -1,0 +1,45 @@
+{{template "base" .}}
+{{define "content"}}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="../static/images/bedroom-gd596b709d_1280.jpg" class="room-image img-fluid mx-auto d-block img-thumbnail">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center mt-4">Major's Suite </h1>
+            <p>Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vaction to remember  </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <a href="#!" id="check-availability-btn" class="btn btn-success">Check Availability</a>
+        </div>
+    </div>
+</div>
+{{end}}
+{{define "js"}}
+<script>
+    document.getElementById("check-availability-btn").addEventListener("click", function () {
+        let html =
+            `
+            <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+                <div class="row">
+                    <div class="col">
+                        <div class="row" id="reservation-dates-modal">
+                            <div class="col">
+                                <input type="text" class="form-control" name="start" id="start" placeholder="Arrival" disabled required>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="end" id="end" placeholder="Departure" disabled required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        `
+        attention.custom({msg: html, title: "Choose your dates"})
+    });
+</script>
+{{end}}

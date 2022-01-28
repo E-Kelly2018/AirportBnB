@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/E-Kelly2018/AirportBnB/pkg/config"
-	"github.com/E-Kelly2018/AirportBnB/pkg/handlers"
-	"github.com/E-Kelly2018/AirportBnB/pkg/render"
+	"github.com/E-Kelly2018/AirportBnB/internal/config"
+	"github.com/E-Kelly2018/AirportBnB/internal/handlers"
+	"github.com/E-Kelly2018/AirportBnB/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
