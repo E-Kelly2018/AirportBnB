@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/E-Kelly2018/AirportBnB/internal/config"
 	"github.com/E-Kelly2018/AirportBnB/internal/handlers"
+	"github.com/E-Kelly2018/AirportBnB/internal/models"
 	"github.com/E-Kelly2018/AirportBnB/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
@@ -17,6 +19,7 @@ var session *scs.SessionManager
 const port = ":8080"
 
 func main() {
+	gob.Register(models.Reservation{})
 	//Chnage to true when in production
 	app.InProduction = false
 
