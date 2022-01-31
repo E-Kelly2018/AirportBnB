@@ -3,6 +3,6 @@
 This is the repository for my booking and  reservation web application
 
 - Built with Go
-- Uses the [chi router](github.com/go-chi/chi v1.5.4) 
+- Uses the [chi router](github.com/go-chi/chi) 
 - Uses [alex edwards SCS session managment](github.com/alexedwards/scs/v2)
-- Uses [nosurf](github.com/justinas/nosurf)
+- Uses [nosurf](github.com/justinas/nosurf)             x
