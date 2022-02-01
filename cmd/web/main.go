@@ -5,25 +5,57 @@ import (
 	"fmt"
 	"github.com/E-Kelly2018/AirportBnB/internal/config"
 	"github.com/E-Kelly2018/AirportBnB/internal/handlers"
+	"github.com/E-Kelly2018/AirportBnB/internal/helpers"
 	"github.com/E-Kelly2018/AirportBnB/internal/models"
 	"github.com/E-Kelly2018/AirportBnB/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
+const portNumber = ":8080"
+
 var app config.AppConfig
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
-const port = ":8080"
-
+// main is the main function
 func main() {
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
-	//Chnage to true when in production
+
+	// change this to true when in production
 	app.InProduction = false
 
-	//Set up session timeout
+	infoLog = log.New(os.Stdout, "Info\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stdout, "Error\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
+
+	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -34,20 +66,16 @@ func main() {
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		log.Fatal("Cannot create template cache")
+		log.Fatal("cannot create template cache")
+		return err
 	}
 
 	app.TemplateCache = tc
 	app.UseCache = false
+
 	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
 	render.NewTemplates(&app)
-
-	fmt.Println(fmt.Sprintf("Starting application on %s", port))
-	srv := &http.Server{
-		Addr:    port,
-		Handler: routes(&app),
-	}
-	err = srv.ListenAndServe()
-	log.Fatal(err)
+	helpers.NewHelpers(&app)
+	return nil
 }
